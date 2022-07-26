@@ -9,6 +9,10 @@ DOCKER_COMPOSE_PHP_FPM_EXEC = ${DOCKER_COMPOSE} exec -u www-data php-fpm
 # Docker compose
 ##################
 
+up: dc_up
+down: dc_down
+init: dc_down dc_build dc_up composer_install db_migrate
+
 dc_build:
 	${DOCKER_COMPOSE} build
 
@@ -29,6 +33,9 @@ dc_logs:
 
 dc_down:
 	${DOCKER_COMPOSE} down -v --rmi=all --remove-orphans
+
+composer_install:
+	${DOCKER_COMPOSE} exec -u www-data php-fpm composer i
 
 
 ##################
